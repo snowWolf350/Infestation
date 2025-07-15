@@ -5,43 +5,70 @@ using UnityEngine.UIElements;
 
 public class enemyScript : MonoBehaviour
 {
-    public GameObject Player;
+  
     public SpriteRenderer enemySprite;
     public Rigidbody2D erb;
-    private const float moveSpeed = 2;
-    private const float stopDistance = 3;
-    public float distance;
-    void Start()
-    {
-        
-    }
+    public CapsuleCollider2D ebox;
 
+    Vector3 originalPos,targetPos;
+
+    public float height = 0.25f;
+    public float speed = 18;
+    public bool isfalling = false;
+    public bool movingRight = true;
     
     void Update()
     {
-        float distance = Player.transform.position.x - transform.position.x;
-        float absDistance = Mathf.Abs(distance);
-
-        if (absDistance > stopDistance)
+        if (isfalling == false)
         {
-            float direction = Mathf.Sign(distance); // 1 if player is right, -1 if left
-
-            switch(direction)
+            if (movingRight)
             {
-                case 1:
-                    enemySprite.flipX = true;
-                    break;
-                case -1:
-                    enemySprite.flipX = false;
-                    break;
+                erb.velocity = new Vector2(1 * speed, erb.velocity.y);
+                enemySprite.flipX = true;
             }
-
-
-            erb.velocity = new Vector2(direction * moveSpeed, erb.velocity.y);
+            else
+            {
+                erb.velocity = new Vector2(-1 * speed, erb.velocity.y);
+                enemySprite.flipX = false;
+            }
+                
         }
-        else
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("block") && isfalling == false)
         {
-            erb.velocity = Vector2.zero; // Stops movement
+            movingRight = !movingRight;
         }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isfalling == false && collision.gameObject.CompareTag("Player"))
+            StartCoroutine(hit());
+    }
+
+    IEnumerator hit()
+    {
+        gameManager.updateScore(200);
+        isfalling = true;
+        ebox.enabled = false;
+        originalPos = transform.position;
+        targetPos = originalPos + Vector3.up * height;
+
+        while (Vector3.Distance(transform.position, targetPos) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            yield return null;
+        }
+        while (transform.position.y > -6.5)
+        {
+            transform.position += Vector3.down * speed * Time.deltaTime;
+            yield return null;
+        }
+        isfalling = false;
+        Destroy(gameObject);
     }
 }
