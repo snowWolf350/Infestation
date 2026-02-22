@@ -15,12 +15,12 @@ after i finished the game. So yea   /(ㄒoㄒ)/~~
 
 <h4>Here are the project images</h4>
 <p align = "center">
-<img src = "inf1" width = "500">
-<img src = "inf2" width = "500">
-  <img src = "inf3" width = "500">
-  <img src = "inf4" width = "500">
-  <img src = "inf5" width = "500">
-  <img src = "inf6" width = "500">
-  <img src = "inf7" width = "500">
-  <img src = "inf8" width = "500">
+<img src = "inf1.png" width = "500">
+<img src = "inf2.png" width = "500">
+  <img src = "inf3.png" width = "500">
+  <img src = "inf4.png" width = "500">
+  <img src = "inf5.png" width = "500">
+  <img src = "inf6.png" width = "500">
+  <img src = "inf7.png" width = "500">
+  <img src = "inf8.png" width = "500">
 </p>
